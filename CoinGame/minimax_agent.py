@@ -44,7 +44,6 @@ class MinimaxAgent(Agent):
         if not action:
             possible_actions = obs.get_possible_actions()
             action = possible_actions[0]
-        assert True, "is final"
         return action
     
     def minimax(self, board, player, depth):
