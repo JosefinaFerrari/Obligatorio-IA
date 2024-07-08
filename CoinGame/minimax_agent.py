@@ -21,7 +21,7 @@ class MinimaxAgent(Agent):
                             isolated_coins+=1
     
         if(isolated_coins % 2 ==0):
-            return -1*isolated_coins            
+            return -isolated_coins            
         else: 
             return isolated_coins
 
