@@ -2,28 +2,20 @@ from board import Board
 from agent import Agent
 
 class MinimaxAgent(Agent):
-    def __init__(self, player=1):
+    def __init__(self, player=1, depth=3):
         super().__init__(player)
+        self.default_depth = depth
             
     def heuristic_utility(self, board):
-        isolated_coins_utility = self.heuristic_isolated_coins(board)
-        remaining_coins_utility = self.heuristic_remaining_coins(board)
-        return isolated_coins_utility*2/3 - remaining_coins_utility/3
+        nim_sum = self.heuristic_nim_sum(board)
+        remaining_coins = self.heuristic_remaining_coins(board)
+        return -nim_sum-remaining_coins 
     
-    def heuristic_isolated_coins(self, board):
-        isolated_coins = 0
-        num_rows, num_cols = board.board_size
-        for row in range(num_rows):
-            for col in range(num_cols):
-                if board.grid[row][col] == 0:
-                    if col-1>0 & col+1<=num_cols:
-                        if board.grid[row][col-1] == 0 & board.grid[row][col+1] == 0:
-                            isolated_coins+=1
-    
-        if(isolated_coins % 2 ==0):
-            return -1*isolated_coins            
-        else: 
-            return isolated_coins
+    def heuristic_nim_sum(self, board):
+        nim_sum = 0
+        for row in board.grid:
+            nim_sum ^= sum(row)
+        return nim_sum
 
     def heuristic_remaining_coins(self, board):
         remaining_coins = 0
@@ -35,12 +27,12 @@ class MinimaxAgent(Agent):
         return remaining_coins
     
     def next_action(self, obs):
-        DEPTH = 3
         playerr = self.player
-        action, _ = self.minimax(board=obs, player=(playerr%2)+1, depth=DEPTH)
+        action, _ = self.minimax(board=obs, player=(playerr % 2) + 1, depth=self.default_depth)
         if not action:
-            possible_actions = obs.get_possible_actions()
-            action = possible_actions[0]
+            heuristic_values = [self.heuristic_utility(obs) for a in obs.get_possible_actions()] 
+            best_action_index = heuristic_values.index(max(heuristic_values))
+            action = obs.get_possible_actions()[best_action_index]
         return action
     
     def minimax(self, board, player, depth):
