@@ -3,7 +3,7 @@ from gymnasium.envs.classic_control.pendulum import PendulumEnv
 class PendulumEnvExtended(PendulumEnv):
     def __init__(self, *args, **kwargs):
         super(PendulumEnvExtended, self).__init__(*args, **kwargs)
-        self.max_steps = 1000
+        self.max_steps = 700
         self.actual_steps = 0
         
     def step(self, action):
