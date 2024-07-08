@@ -9,7 +9,7 @@ class MinimaxAgent(Agent):
     def heuristic_utility(self, board):
         nim_sum = self.heuristic_nim_sum(board)
         remaining_coins = self.heuristic_remaining_coins(board)
-        return -nim_sum-remaining_coins 
+        return -nim_sum
     
     def heuristic_nim_sum(self, board):
         nim_sum = 0
@@ -64,5 +64,5 @@ class MinimaxAgent(Agent):
                 if utility < best_utility:
                     best_action = action
                     best_utility = utility
-                return best_action, best_utility
+            return best_action, best_utility
         
